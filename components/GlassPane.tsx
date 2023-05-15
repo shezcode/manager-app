@@ -1,6 +1,8 @@
-const GlassPane = ({children}) => {
+import '@/styles/global.css'
+
+const GlassPane = ({children}: any) => {
   return (
-    <div className="rounded-2xl">
+    <div className="glass rounded-2xl border-solid border-2 border-gray-200">
       {children}
     </div>
   )
