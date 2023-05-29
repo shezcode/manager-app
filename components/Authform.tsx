@@ -30,7 +30,7 @@ const AuthForm = ({mode}) => {
   const [formState, setFormState] = useState(initialState)
   const router = useRouter()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (mode === 'register'){
       await register(formState)
@@ -38,6 +38,7 @@ const AuthForm = ({mode}) => {
       await signin(formState)
     }
     setFormState(initialState)
+    router.replace('/home')
   }
 
   const content = mode === 'register' ? registerContent : signinContent
@@ -93,8 +94,37 @@ const AuthForm = ({mode}) => {
               }
             />
           </div>
+          <div className="mb-8">
+            <div className="text-lg mb-4 ml-2 text-black/50">Password</div>
+            <Input 
+              required
+              type="password"
+              placeholder="Password"
+              value={formState.password}
+              className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+              onChange={(e) => 
+                    setFormState((s) => ({ ...s, password: e.target.value}))
+              }
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <span>
+                <Link
+                  href={content.linkurl}
+                  className="text-blue-600 font-bold"
+                >{content.linkText}
+                </Link>
+              </span>
+            </div>
+          </div>
+          <Button type="submit" intent="secondary">
+            {content.buttonText}
+          </Button>
         </form>
       </div>
     </Card>
   )
 }
+
+export default AuthForm;
