@@ -23,3 +23,78 @@ const signinContent = {
   subheader: 'Enter you credentials to access your account',
   buttonText: 'Sign in'
 }
+
+const initialState = {email: '', password: '', firstName: '', lastName: ''}
+
+const AuthForm = ({mode}) => {
+  const [formState, setFormState] = useState(initialState)
+  const router = useRouter()
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (mode === 'register'){
+      await register(formState)
+    } else {
+      await signin(formState)
+    }
+    setFormState(initialState)
+  }
+
+  const content = mode === 'register' ? registerContent : signinContent
+
+  return (
+    <Card>
+      <div className="w-full">
+        <div className="text-center">
+          <h2 className="text-3xl mb-2">{content.header}</h2>
+          <p className="text-lg text-black/25">{content.subheader}</p>
+        </div>
+        <form onSubmit={handleSubmit} className="py-10 w-full">
+          {mode === 'register' && (
+            <div className="flex mb-8 justify-between">
+              <div className="pr-2">
+                <div className="text-lg mb-4 ml-2 text-black/50">
+                  First Name
+                </div> 
+                <Input 
+                  required
+                  placeholder="First Name"
+                  value={formState.firstName}
+                  className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+                  onChange={(e) => 
+                    setFormState((s) => ({ ...s, firstName: e.target.value}))
+                  }
+                />
+              </div>
+              <div className="pl-2">
+                <div className="text-lg mb-4 ml-2 text-black/50">Last Name</div>
+                <Input 
+                  required
+                  placeholder="Last Name"
+                  value={formState.lastName}
+                  className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+                  onChange={(e) => 
+                    setFormState((s) => ({ ...s, lastName: e.target.value}))
+                  }
+                />
+              </div>
+            </div>
+          )}
+          <div className="mb-8">
+            <div className="text-lg mb-4 ml-2 text-black/50">Email</div>
+            <Input 
+              required
+              type="email"
+              placeholder="Email"
+              value={formState.email}
+              className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+              onChange={(e) => 
+                    setFormState((s) => ({ ...s, email: e.target.value}))
+              }
+            />
+          </div>
+        </form>
+      </div>
+    </Card>
+  )
+}
