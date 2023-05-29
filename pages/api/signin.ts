@@ -5,20 +5,26 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 
 export default async function signin(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     const user = await db.user.findUnique({
       where: {
         email: req.body.email
       }
     })
 
-    const isUser = await comparePasswords(req.body.password, user?.password)
+    if (!user) {
+      res.status(401)
+      res.json({ error: "Invalid login"})
+      return
+    }
+
+    const isUser = await comparePasswords(req.body.password, user.password)
 
     if (isUser) {
       const jwt = await createJWT(user)
 
       res.setHeader(
-        'Set-Cookie',
+        "Set-Cookie",
         serialize(process.env.COOKIE_NAME, jwt, {
           httpOnly: true,
           path: "/",
@@ -27,10 +33,13 @@ export default async function signin(req: NextApiRequest, res: NextApiResponse) 
       )
 
       res.status(201)
-      res.end()     
+      res.json({})     
+    } else {
+      res.status(401)
+      res.json({error: "Invalid login"})
     }
   } else {
     res.status(402)
-    res.end()
+    res.json({})
   }   
 }

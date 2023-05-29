@@ -38,7 +38,7 @@ const AuthForm = ({mode}) => {
       await signin(formState)
     }
     setFormState(initialState)
-    router.replace('/home')
+    router.replace('/')
   }
 
   const content = mode === 'register' ? registerContent : signinContent
