@@ -1,3 +1,4 @@
+import { createJWT } from "@/lib/auth";
 import { comparePasswords } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { serialize } from "cookie";
@@ -23,9 +24,11 @@ export default async function signin(req: NextApiRequest, res: NextApiResponse) 
     if (isUser) {
       const jwt = await createJWT(user)
 
+    const cookie: string = process.env.COOKIE_NAME || 'backup'
+
       res.setHeader(
         "Set-Cookie",
-        serialize(process.env.COOKIE_NAME, jwt, {
+        serialize(cookie, jwt, {
           httpOnly: true,
           path: "/",
           maxAge: 60 * 60 * 24 * 7,

@@ -6,7 +6,7 @@ import Card from "./Card";
 import Input from "./Input";
 import { useRouter } from "next/navigation";
 import { register, signin } from "@/lib/api";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 const registerContent = {
   linkurl: '/signin',
