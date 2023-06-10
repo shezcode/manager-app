@@ -20,7 +20,7 @@ export const createJWT = user => {
     .sign(new TextEncoder().encode(process.env.JWT_SECRET))
 }
 
-export const validateJWT = async (jwt) => {
+export const validateJWT = async (jwt: string) => {
   const {payload} = await jwtVerify(
     jwt,
     new TextEncoder().encode(process.env.JWT_SECRET)

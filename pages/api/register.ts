@@ -19,14 +19,22 @@ export default async function register(
 
     const jwt = await createJWT(user)
 
+    const cookieName = process.env.COOKIE_NAME
+
+    if (typeof cookieName === 'string'){
     res.setHeader(
       'Set-Cookie',
-      serialize(process.env.COOKIE_NAME, jwt, {
+      serialize(cookieName, jwt, {
         httpOnly: true,
         path: "/",
         maxAge: 60 * 60 * 24 * 7,
       })
     )
+
+    } else {
+      throw new Error('Invalid cookie name')
+    }
+
 
     res.status(201)
     console.log('user registered successfully')

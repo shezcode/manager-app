@@ -26,7 +26,9 @@ const signinContent = {
 
 const initialState = {email: '', password: '', firstName: '', lastName: ''}
 
-const AuthForm = ({mode}) => {
+type TMode = 'register' | 'signin'
+
+const AuthForm = (mode: TMode) => {
   const [formState, setFormState] = useState(initialState)
   const router = useRouter()
 
